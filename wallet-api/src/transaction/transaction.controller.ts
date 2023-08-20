@@ -13,6 +13,7 @@ export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
 
   @Post()
+  //TODO: FIX THE VALIDATION
   @UsePipes(new ValidationPipe({ whitelist: true }))
   createTransport(@Body() transactions: TransactionDTO[]) {
     const chunks =
