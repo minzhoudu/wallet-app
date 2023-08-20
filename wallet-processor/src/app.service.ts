@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { Chunk } from './interfaces/chunk.interface';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+  handleChunks(chunks: Chunk[]) {
+    console.log('handleChunks - COMMUNICATION', chunks);
   }
 }

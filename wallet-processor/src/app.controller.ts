@@ -1,12 +1,14 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { AppService } from './app.service';
+import { EventPattern } from '@nestjs/microservices';
+import { Chunk } from './interfaces/chunk.interface';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @EventPattern('chunks_created')
+  handleChunks(chunks: Chunk[]) {
+    this.appService.handleChunks(chunks);
   }
 }

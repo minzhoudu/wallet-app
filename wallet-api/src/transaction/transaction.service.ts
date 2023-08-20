@@ -1,9 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 import { TransactionDTO } from 'src/dto/transaction.dto';
 import { Chunk } from 'src/interfaces/chunk.interface';
 
 @Injectable()
 export class TransactionService {
+  constructor(
+    @Inject('CONNECTION') private readonly communicationClient: ClientProxy,
+  ) {}
+
   private createNewChunk(): Chunk {
     return {
       transactions: [],
@@ -39,7 +44,8 @@ export class TransactionService {
 
   sendTransactionsToProcessor(transactions: TransactionDTO[]) {
     const chunks: Chunk[] = [];
+    this.splitTransactions(transactions, chunks);
 
-    return this.splitTransactions(transactions, chunks);
+    this.communicationClient.emit('chunks_created', chunks);
   }
 }
