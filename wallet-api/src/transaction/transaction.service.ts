@@ -34,13 +34,12 @@ export class TransactionService {
       this.splitTransactions(transactions, chunks);
     }
 
-    return chunks;
+    return chunks.sort((a, b) => b.totalValue - a.totalValue);
   }
 
   sendTransactionsToProcessor(transactions: TransactionDTO[]) {
     const chunks: Chunk[] = [];
-    const sortedTransactions = transactions.sort((a, b) => a.value - b.value);
 
-    return this.splitTransactions(sortedTransactions, chunks);
+    return this.splitTransactions(transactions, chunks);
   }
 }
